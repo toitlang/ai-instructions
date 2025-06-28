@@ -12,13 +12,11 @@ As recommended by Visual Studio Code:
   use multiple instructions.
 - Don't refer to external resources in the instructions, such as specific
   coding standards.
-- Split instructions into multiple files. This approach is useful for organizing
-  instructions by topic or type of task. ((Less relevant for this repository.))
 - Reference custom instructions in your prompt files to keep your prompts clean and
   focused, and to avoid duplicating instructions for different tasks.
 
 ## VSCode
-Typically, you can use copy the [instructions.md] to
+Typically, you can use copy the [instructions-long.md] to
 `.vscode/copilot-instructions.md` in your project directory.
 
 Alternatively, if you want to add a user-wide instructions file, you can
