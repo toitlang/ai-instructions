@@ -68,7 +68,7 @@ foo := [
 ```
 
 ## Blocks
-Blocks are lambdas that can not be stored in a field or global. They are
+Blocks are lambdas that cannot be stored in a field or global. They are
 a cheaper but more limited alternative to lambdas.
 - Use `:` to start a block.
 - Use [block] to indicate a parameter that is a block.
