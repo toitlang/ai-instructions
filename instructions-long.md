@@ -4,7 +4,7 @@ applyTo: '**/*.toit'
 # Toit conventions
 
 ## Comments
-- comments should start with a capital letter and end with a period.
+- Comments should start with a capital letter and end with a period.
 - Also remember that Toitdocs for methods start with a 3rd person verb.
 - Toitdocs use a variant of markdown, where subsequent lines of a paragraph are indented.
   ```
@@ -19,7 +19,7 @@ applyTo: '**/*.toit'
 ## Naming
 - Use `kebab-case` for variables and functions.
 - Use `PascalCase` for classes.
-- Use `SNAKE_CASE` for constants.
+- Use `KEBAB-CASE` for constants.
 
 ## Error handling
 - Use `e := catch: ...` to catch errors.
