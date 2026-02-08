@@ -76,6 +76,13 @@ Blocks are lambdas that cannot be stored in a field or global. They are
 a cheaper but more limited alternative to lambdas.
 - Use `:` to start a block.
 - Use [block] to indicate a parameter that is a block.
+- To "return" from a block, use `continue.xyz` to continue to "xyz".
+```
+  list.map: |item/string|
+    if item == "foo": continue.do 499
+    42
+```
+- Calling `return` inside a block will return from the enclosing function, not the block. (non-local return).
 
 ## Loops
 - Prefer `x.repeat: ...` over `for i := 0; i < x; i++: ...` for loops, if the
