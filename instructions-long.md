@@ -6,24 +6,28 @@ applyTo: '**/*.toit'
 ## Comments
 - Comments should start with a capital letter and end with a period.
 - Also remember that Toitdocs for methods start with a 3rd person verb.
-- Toitdocs use a variant of markdown, where subsequent lines of a paragraph are indented.
+- Toitdocs use a variant of markdown, where subsequent lines of a paragraph are indented. They use `$` to refer to code elements including parameters.
+  When writing Toitdocs for parameters, use them inside sentences that describe the parameter, and not as a list of parameters.
+  For example:
   ```
   /**
   Does something.
 
-  A paragraph over
-    multiple lines.
+  Returns something based on the $parameter.
+  Another paragraph over
+    multiple lines referencing a $parameter.
   */
+  foo parameter -> none:
+  ```
+- End-of-line comments should be separated from the code by at least two spaces, and start with a capital letter.
+  ```
+  foo := 42  // This is an end-of-line comment.
   ```
 
 ## Naming
 - Use `kebab-case` for variables and functions.
 - Use `PascalCase` for classes.
 - Use `KEBAB-CASE` for constants.
-
-## Error handling
-- Use `e := catch: ...` to catch errors.
-- Use `try: ... finally: ...` to run finally code.
 
 ## Common types
 Some of the common types in Toit include `int`, `float`, `bool`, `string`, `List`,
@@ -94,6 +98,15 @@ body of the loop doesn't break.
     print item
   ```
 
+## Named parameters
+- Toit uses '--' to indicate named parameters at the call and declaration site.
+- Use named parameters for parameters that are not self-explanatory, or when multiple parameters have the same type.
+- At the call-site, avoid `=true` and `=false` for boolean named parameter. If `=xyz` is missing, it is assumed to be `=true`. Use `--no-xyz` to set it to `false`.
+  ```
+  my-function --some-flag
+  my-function --no-some-flag
+  ```
+
 ## Variable/Field declaration
 - Use `=` for assignment.
 - Use `:=` to introduce a mutable variable or field. Inside functions prefer mutable variables over immutable variables.
@@ -136,7 +149,37 @@ body of the loop doesn't break.
 - Use `?` suffix on types to indicate that the variable/field can be `null`.
   ```
   class MyClass:
-    my-field?/string := ?
-
-    constructor .my-field_:
+    my-field/string? := null
   ```
+
+## Exceptions
+- Use `throw` to throw an exception. Most of Toit uses strings as exceptions, but you can throw any value.
+  ```
+  throw "error"
+  throw MyException "something went wrong"
+  ```
+- Consider exception objects for libraries where the caller needs to distinguish between different exceptions, and a string doesn't provide enough information.
+- Use `catch` with a block to catch exceptions.
+  ```
+  e := catch: throw "error"
+  if e != null:
+    print "Caught error: " + e
+  ```
+- Use `try: ... finally: ...` to run finally code.
+  ```
+  try:
+    throw "error"
+  finally:
+    print "This will always be printed."
+  ```
+- If code should be run only if an exception was thrown prefer to set a flag in the catch block and check it in the finally block:
+  ```
+  succeeded := false
+  try:
+    some-dangerous-operation
+    succeeded := true
+  finally:
+    if not succeeded:
+      do-something-if-it-failed
+  ```
+- Toit does *not* support `try` with a `catch` block.
