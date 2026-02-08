@@ -79,7 +79,7 @@ a cheaper but more limited alternative to lambdas.
 - To "return" from a block, use `continue.xyz` to continue to "xyz".
 ```
   list.map: |item/string|
-    if item == "foo": continue.do 499
+    if item == "foo": continue.map 499
     42
 ```
 - Calling `return` inside a block will return from the enclosing function, not the block. (non-local return).
