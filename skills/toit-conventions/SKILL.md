@@ -1,4 +1,6 @@
 ---
+name: toit-conventions
+description: Guidance on how to write Toit code. Use whenever editing Toit code.
 applyTo: '**/*.toit'
 ---
 # Toit conventions
