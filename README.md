@@ -21,7 +21,10 @@ Alternatively, you can use a symlink to ensure that the skills are always up to 
 
 ```
 for d in .agent .claude; do
-  ln -s $PATH_TO_AI_TOOLS/skills "$d/skills"
+  mkdir -p "$d/skills"
+  for s in $PATH_TO_AI_TOOLS/skills/*; do
+    ln -s $s "$d/skills/$(basename $s)" 
+  done
 done
 ```
 
