@@ -77,9 +77,27 @@ If the package has tests, also copy:
 
 ### Best Practices
 - **README.md**: Include a title, a short description, and an example of usage.
-- **License**: Include a `LICENSE` file (typically the MIT license).
+- **License**: Include a `LICENSE` file.
 - **Documentation**: Use Toitdoc comments on public code.
 - **.gitignore**: Ignore `.packages/` and `build/`. (See `resources/.gitignore`).
 
+### License
+Typically, Toit packages should be MIT (or similar).
+Tests and examples are often BSD0.
+
+Files should start with:
+```
+// Copyright (C) 2026 Toit contributors.
+// Use of this source code is governed by an MIT-style license that can be
+// found in the LICENSE file.
+```
+
+Users can, of course, replace the copyright with their name and/or choose other
+licenses.
+If there are different license files (like with BSD0), don't forget to update
+the "found in the LICENSE file" with the correct name of the file.
+
 ### Verify the package
 Use `toit pkg describe` to see whether the name, description and license are correctly recognized.
+
+If there are tests, make sure `make test` works.
