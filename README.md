@@ -17,15 +17,4 @@ for d in .agent .claude; do
 done
 ```
 
-Alternatively, you can use a symlink to ensure that the skills are always up to date:
-
-```
-for d in .agent .claude; do
-  mkdir -p "$d/skills"
-  for s in $PATH_TO_AI_TOOLS/skills/*; do
-    ln -s $s "$d/skills/$(basename $s)" 
-  done
-done
-```
-
 Restart your editor.
