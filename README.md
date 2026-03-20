@@ -6,9 +6,7 @@ Skills and other tools for AI agents working with Toit.
 
 #### Project-Local Skills
 
-In your repository, create a workspace skills directory: `.agent/skills/`, `.claude/skills/`, `.copilot/skills/`.
-
-Place each skill from skills/ inside its own subdirectory under this folder:
+In your project, or home directory:
 
 ```
 for d in .agent .claude; do
