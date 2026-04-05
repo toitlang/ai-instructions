@@ -6,6 +6,10 @@ description: Guidelines and conventions for writing Toitdoc comments when docume
 # Toitdoc Skill
 This skill provides instructions on how to write concise and properly formatted Toitdoc documentation for Toit code. Keep it helpful for both API callers and subclass developers.
 
+Put library comments after the import lines.
+
+Prefer slightly to put general documentation into library comments over class comments.
+
 ## Syntax and Basics
 - Use `/** ... */` comments, even for single lines. They are preferred over `///`.
 - Start every documentation block with a short descriptive sentence. It's okay to duplicate the element name.
