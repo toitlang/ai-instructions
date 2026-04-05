@@ -192,3 +192,16 @@ body of the loop doesn't break.
       do-something-if-it-failed
   ```
 - Toit does *not* support `try` with a `catch` block.
+
+## super calls
+In non-constructors 'super' calls the same-named function as the current one.
+
+```
+class A:
+  foo x: return 40 + x
+
+class B extends:
+  foo: return super 2  // Returns `A.foo 2`.
+```
+
+Calling `super.foo` would be a mistake trying to call `foo` on 42.
