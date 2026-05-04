@@ -73,7 +73,7 @@ Establish CI/CD pipelines in `.github/workflows/`.
 - Copy `resources/.github/dependabot.yml` to `.github/dependabot.yml`.
 
 If the package has tests, also copy:
-- Copy `resources/.github/workflows/ci.yml` to `.github/workflows/ci.yml`. Replace <sdk-version>` with the current SDK version.
+- Copy `resources/.github/workflows/ci.yml` to `.github/workflows/ci.yml`. The workflow extracts the oldest supported SDK version from `package.yaml` automatically.
 
 ### Best Practices
 - **README.md**: Include a title, a short description, and an example of usage.
