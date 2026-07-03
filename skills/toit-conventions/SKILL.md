@@ -161,6 +161,24 @@ body of the loop doesn't break.
     my-field/string? := null
   ```
 
+## Null and boolean expressions
+- Only `null` and `false` are falsy. Every other value (including `0`, `""`,
+  and empty collections) is truthy.
+- Checking a non-boolean for `null` uses this implicit boolification. Prefer
+  `if x` over `if x != null`, and `if not x` over `if x == null`.
+  ```
+  if name: use name          // Instead of `if name != null:`.
+  if not name: return        // Instead of `if name == null:`.
+  ```
+- `and` and `or` return the last evaluated operand, not just a boolean, so
+  they double as null-coalescing and guarded-access operators.
+  ```
+  prefix := preferred or segments.last   // Instead of `preferred != null ? preferred : segments.last`.
+  size := list and list.size             // `null` when `list` is null, otherwise its size.
+  ```
+  Keep these short. Don't force a complicated expression into an `and`/`or`
+  chain when an `if` reads more clearly.
+
 ## Exceptions
 - Use `throw` to throw an exception. Most of Toit uses strings as exceptions, but you can throw any value.
   ```
@@ -171,7 +189,7 @@ body of the loop doesn't break.
 - Use `catch` with a block to catch exceptions.
   ```
   e := catch: throw "error"
-  if e != null:
+  if e:
     print "Caught error: " + e
   ```
 - Use `try: ... finally: ...` to run finally code.
