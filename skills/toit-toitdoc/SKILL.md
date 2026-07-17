@@ -32,6 +32,18 @@ Prefer slightly to put general documentation into library comments over class co
 - Prefix names with `$` to natively link to elements (e.g., `Returns $element-name`). This is fine to refer to any of the methods if there is overloading.
 - Link elements taking arguments explicitly: `$(method arg1 arg2)`. Use this if you want to link to *that* specific method.
 - URLs (`http://...`) and file paths (`file://...`) are automatically linked.
+- Do *not* write `$param.member`: member access on a parameter does not resolve,
+  and `toit analyze` reports "Unresolved reference". This is expected behavior,
+  not a bug to work around.
+  ```
+  /**
+  Writes $bytes to the device.
+
+  Fails if the size of $bytes exceeds the buffer.  // Not `$bytes.size`.
+  */
+  write bytes/ByteArray -> none:
+  ```
+  Link the parameter itself with `$bytes` and name the member in prose.
 
 ## Sections
 Use markdown headings (e.g. `# Advanced`) for specific sections. Follow these conventions:
