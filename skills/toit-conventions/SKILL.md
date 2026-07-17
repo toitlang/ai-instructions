@@ -40,11 +40,59 @@ Some of the common types in Toit include `int`, `float`, `bool`, `string`, `List
 - Use spaces, not tabs.
 - Use 4 spaces for indentation of parameters.
 
+## Line continuation
+A call's arguments may continue on the following lines, indented deeper than the
+start of the statement. **Each continuation line is parsed as one complete
+expression, and becomes one argument.** A line is not a continuation of the
+argument list; it is a single argument.
+
+```
+// Same as `foo 1 2 3`.
+foo 1
+    2
+    3
+
+// NOT the same as `foo 1 2 3`. Parsed as `foo 1 (2 3)`, which tries to call
+// the integer 2: "Can't call result of evaluating expression".
+foo 1
+    2 3
+```
+
+Use this to avoid parentheses: a continuation line that is itself a call needs
+no parentheses, since the whole line is one expression.
+```
+// Instead of `foo 1 (bar 2)`.
+foo 1
+    bar 2
+```
+
+The continuation must be indented deeper than the statement start. At the same
+indentation it is a new statement, and a leading `--b=2` then reports the
+misleading "Prefix decrement has been removed".
+
+## Conditionals
+In a multi-line conditional, `?` and `:` must both start their continuation
+lines:
+```
+val := cond
+    ? "yes"
+    : "no"
+```
+Leaving `?` on the first line does not parse ("Missing ':' in conditional
+expression"):
+```
+// Does not parse.
+val := cond ? "yes"
+    : "no"
+```
+
 ## Literals
 - `{:}` is an empty map; `{"foo": "bar"}` a map with an entry.
 - `[]` is an empty list;  `[1, 2, 3]` is a list with three entries.
 - `{}` is an empty set; `{1, 2, 3}` is a set with three entries.
 - `#[]` is an empty byte array, `#[1, 2, 3]` is a byte array with three entries.
+- Separate digits in numeric literals with `_`, never `-`: `0xdead_beef`.
+  `0xdead-beef` is a subtraction of a variable named `beef`.
 
 If a literal is not on one line, add a trailing comma and indent as follows:
 ```
@@ -53,6 +101,20 @@ foo := [
   "bar",
   "baz",
 ]
+```
+
+## String interpolation
+Interpolation is greedy, and because identifiers are `kebab-case`, a `-` does
+*not* end the interpolated expression.
+
+```
+// Error: looks for a member called `size-entry`.
+print "$target.entries.size-entry"
+```
+
+Wrap the expression in `$(...)`:
+```
+print "$(target.entries.size)-entry"
 ```
 
 ## Types
@@ -223,3 +285,45 @@ class B extends:
 ```
 
 Calling `super.foo` would be a mistake trying to call `foo` on 42.
+
+## Common library idioms
+
+### Maps
+Use `--init` to get-or-create. The block takes no argument, and its result is
+stored in the map:
+```
+(m.get key --init=: []).add value
+```
+Use `--if-absent` to compute a fallback *without* storing it. This block
+receives the key:
+```
+name := m.get key --if-absent=: | missing | "unknown $missing"
+```
+Use `--if-present` to map a value only when it is there (returns null otherwise):
+```
+found := m.get key --if-present=: | value | "have $value"
+```
+Use `update` with `--init` to seed-then-modify. The `update` block gets
+  the current value:
+```
+m.update key --init=0: it + 1
+```
+
+### ByteArray
+Fill a byte array at construction with `--initial`:
+```
+buffer := ByteArray 4 --initial=0xff
+```
+
+### Binary encoding
+Use `io.LITTLE-ENDIAN` (or `io.BIG-ENDIAN`) to read and write integers. The
+setters take the byte array, the offset, and then the value:
+```
+import io
+
+io.LITTLE-ENDIAN.put-uint32 buffer 0 0xdead_beef
+value := io.LITTLE-ENDIAN.uint32 buffer 0
+```
+
+The `io.Reader` and `io.Writer` also have `.little-endian` and `.big-endian`
+accessors that allow to read/write in that encoding.
